@@ -4,7 +4,7 @@ pragma solidity >=0.7.0<0.9.0;
 
 // functions found in ERC20 token
 interface IWETH {
-    function deposite() external payable;
+    function deposit() external payable;
     function withdraw(uint) external;
     function totalSupply() external view returns (uint);
     function balanceOd(address account) external view returns (uint);
