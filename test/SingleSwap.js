@@ -1,7 +1,7 @@
-const { expect } = require("chai");
+const { expect } = require("chai"); // library for testing
 const { ether } = require("hardhat");
 
-// addresses
+// replace with track addresses
 const DAI = "";
 const WETH9 = "";
 const USDC = "";
@@ -49,7 +49,7 @@ describe("SingleSwapToken", () => {
     const wethAmountInMax = 10n ** 18n;
     const daiAmountOut = 100n * 10n * 18n;
 
-    //deposite weth
+    //deposit weth
     await weth.deposit({ value: wethAmountInMax });
     await weth.approve(singleSwapToken.address, wethAmountInMax);
 

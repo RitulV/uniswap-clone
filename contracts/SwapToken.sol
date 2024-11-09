@@ -12,7 +12,7 @@ import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 contract SingleSwapToken{
     ISwapRouter public constant swapRouter = ISwapRouter();
 
-    // addresses of the tokens 
+    // initialize with actual addresses of the tokens 
     address public constant DAI;
     address public constant WETH9;
     address public constant USDC;
@@ -28,7 +28,7 @@ contract SingleSwapToken{
         ISwapRouter.ExactInputSingleParams memory params=ISwapRouter.ExactInputSingleParams({
             tokenIn:WETH9,
             tokenOut:DAI,
-            fee:3000,
+            fee:3000, // hardcoded for development, dynamic for production
             recepient:msg.sender,
             deadline:block.timestamp,
             amountIn:amountIn,
