@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-pragma solidity >=0.7.0<0.9.0;
+// pragma solidity >=0.7.0<0.9.0;
+pragma solidity ^0.8.0;
+
 // to use nested array in contracts
 pragma abicoder v2;
 
@@ -10,7 +12,7 @@ import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
 contract SingleSwapToken{
-    ISwapRouter public constant swapRouter = ISwapRouter();
+    ISwapRouter public constant swapRouter = ISwapRouter(0xE592427A0AEce92De3Edee1F18E0157C05861564);
 
     // initialize with contract addresses of the tokens 
     address public constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
@@ -29,7 +31,7 @@ contract SingleSwapToken{
             tokenIn:WETH9,
             tokenOut:DAI,
             fee:3000, // hardcoded for development, dynamic for production
-            recepient:msg.sender,
+            recipient:msg.sender,
             deadline:block.timestamp,
             amountIn:amountIn,
             amountOutMinimum:0,
@@ -49,14 +51,14 @@ contract SingleSwapToken{
             tokenIn:WETH9,
             tokenOut:DAI,
             fee:3000,
-            recepient:msg.sender,
+            recipient:msg.sender,
             deadline:block.timestamp,
             amountOut:amountOut,
             amountInMaximum:amountInMaximum,
             sqrtPriceLimitX96:0
         });
 
-        amountIn=swapRouter.ExactOutputSingle(params);
+        amountIn=swapRouter.exactOutputSingle(params);
 
         if(amountIn<amountInMaximum){
             TransferHelper.safeApprove(WETH9, address(swapRouter), 0);

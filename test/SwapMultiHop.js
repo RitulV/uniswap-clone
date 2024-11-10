@@ -15,16 +15,16 @@ describe("SwapMultiHop", () => {
 
   // this function is run everytime contract is run
   before(async () => {
-    accounts = await ether.getSigners(1);
+    accounts = await ethers.getSigners(1);
 
-    const SwapMultiHop = await ether.getContractFactory("SwapMultiHop");
+    const SwapMultiHop = await ethers.getContractFactory("SwapMultiHop");
 
     swapMultiHop = await SwapMultiHop.deploy();
     await swapMultiHop.deploy();
 
-    weth = await ether.getContractAt("IWETH", WETH9);
-    dai = await ether.getContractAt("IERC20", DAI);
-    usdc = await ether.getContractAt("IERC20", USDC);
+    weth = await ethers.getContractAt("IWETH", WETH9);
+    dai = await ethers.getContractAt("IERC20", DAI);
+    usdc = await ethers.getContractAt("IERC20", USDC);
 
     console.log(weth);
     console.log(dai);
