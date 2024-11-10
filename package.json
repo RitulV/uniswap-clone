@@ -2,7 +2,7 @@
   "name": "uniswapclone",
   "version": "0.1.0",
   "private": true,
-  "scripts": { 
+  "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -19,7 +19,7 @@
     "bignumber.js": "^9.1.0",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.7.2",
-    "hardhat": "^2.11.2",
+    "hardhat": "^2.22.15",
     "next": "13.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
