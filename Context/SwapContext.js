@@ -18,7 +18,6 @@ import { IWETHABI } from "./constants";
 export const SwapTokenContext = React.createContext();
 
 export const SwapTokenContextProvider = ({ children }) => {
-
   const [account, setAccount] = useState("");
   const [ether, setEther] = useState("");
   const [networkConnect, setNetworkConnect] = useState("");
@@ -48,11 +47,11 @@ export const SwapTokenContextProvider = ({ children }) => {
       const balance = await provider.getBalance(userAccount);
       const convertBal = BigNumber.from(balance).toString();
       const ethValue = ethers.utils.formatEther(convertBal);
-        setEther(ethValue);
-        
-        // get network
-        const network = await provider.getNetwork();
-        setNetworkConnect(network.name);
+      setEther(ethValue);
+
+      // get network
+      const network = await provider.getNetwork();
+      setNetworkConnect(network.name);
 
       // all token balance and data
       addToken.map(async (el, i) => {
@@ -97,9 +96,46 @@ export const SwapTokenContextProvider = ({ children }) => {
     fetchingData();
   }, []);
 
+  // single swap token
+  const singleSwapToken = async () => {
+    try {
+      let singleSwapToken, weth, dai;
+
+      singleSwapToken = await connectingWithSingleSwapToken();
+      weth = await connectingWithIWETHToken();
+      dai = await connectingWithDAIToken();
+
+      const amountIn = 10n ** 18n;
+
+      await weth.deposit({ value: amountIn });
+      await weth.approve(singleSwapToken.address, amountIn);
+
+      // swap
+      await singleSwapToken.swapExactInputSingle(amountIn, {
+        gasLimit: 300000,
+      });
+
+      const balance = await dai.balanceOf(account);
+      const transferAmount = BigNumber.from(balance).toString();
+      const ethValue = ether.utils.formatEther(transferAmount);
+      setDai(ethValue);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <SwapTokenContext.Provider
-      value={{ account, weth9, dai, networkConnect, ether }}
+      value={{
+        singleSwapToken,
+        connectWallet,
+        account,
+        weth9,
+        dai,
+        networkConnect,
+        ether,
+        tokenData,
+      }}
     >
       {children}
     </SwapTokenContext.Provider>

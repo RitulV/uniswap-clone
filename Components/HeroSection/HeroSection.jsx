@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 
 import Style from "./HeroSection.module.css";
 import images from "../../assets";
 import { Token, SearchToken } from "../index";
 
-const HeroSection = ({ accounts, tokenData }) => {
+//context
+import { SwapTokenContext } from "../../Context/SwapContext";
+
+const HeroSection = ({ tokenData }) => {
   const [openSetting, setOpenSetting] = useState(false);
   const [openToken, setOpenToken] = useState(false);
   const [openTokensTwo, setOpenTokensTwo] = useState(false);
+
+  const { singleSwapToken, connectWallet, account, ether, dai } =
+    useContext(SwapTokenContext);
 
   // TOKEN_ONE
   const [tokenOne, setTokenOne] = useState({
@@ -16,7 +22,7 @@ const HeroSection = ({ accounts, tokenData }) => {
     image: "",
   });
 
-  // TOKEN_TWO 
+  // TOKEN_TWO
   const [tokenTwo, setTokenTwo] = useState({
     name: "",
     image: "",
@@ -48,7 +54,7 @@ const HeroSection = ({ accounts, tokenData }) => {
               width={20}
             />
             {tokenOne.name || "ETH"}
-            <small>9474</small>
+            <small>{ether}</small>
           </button>
         </div>
 
@@ -62,15 +68,23 @@ const HeroSection = ({ accounts, tokenData }) => {
               width={20}
             />
             {tokenTwo.name || "ETH"}
-            <small>9474</small>
+            <small>{dai}</small>
           </button>
         </div>
 
-        {accounts ? (
-          <button className={Style.HeroSection_box_btn}>Connect Wallet</button>
-        ) : (
-          <button className={Style.HeroSection_box_btn} onClick={() => {}}>
+        {account ? (
+          <button
+            className={Style.HeroSection_box_btn}
+            onClick={() => singleSwapToken()}
+          >
             Swap
+          </button>
+        ) : (
+          <button
+            onClick={() => connectWallet()}
+            className={Style.HeroSection_box_btn}
+          >
+            Connect Wallet
           </button>
         )}
       </div>
