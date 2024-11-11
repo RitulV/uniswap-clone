@@ -1,10 +1,9 @@
-const { expect } = require("chai"); // library for testing
-const { ether } = require("hardhat");
+const { ethers } = require("hardhat");
 
-// replace with track addresses
-const DAI = "";
-const WETH9 = "";
-const USDC = "";
+// Track addresses
+const DAI = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
+const WETH9 = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
+const USDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
 
 describe("SwapMultiHop", () => {
   let swapMultiHop;
@@ -13,49 +12,54 @@ describe("SwapMultiHop", () => {
   let dai;
   let usdc;
 
-  // this function is run everytime contract is run
+  // This function runs once before all tests
   before(async () => {
-    accounts = await ethers.getSigners(1);
+    accounts = await ethers.getSigners();
 
     const SwapMultiHop = await ethers.getContractFactory("SwapMultiHop");
-
     swapMultiHop = await SwapMultiHop.deploy();
-    await swapMultiHop.deploy();
 
     weth = await ethers.getContractAt("IWETH", WETH9);
     dai = await ethers.getContractAt("IERC20", DAI);
     usdc = await ethers.getContractAt("IERC20", USDC);
 
-    console.log(weth);
-    console.log(dai);
-    console.log(usdc);
-    console.log(accounts);
-    console.log(swapMultiHop);
+    console.log("WETH Contract: ", weth.address);
+    console.log("DAI Contract: ", dai.address);
+    console.log("USDC Contract: ", usdc.address);
+    console.log(
+      "Deployed SwapMultiHop Contract Address:",
+      swapMultiHop.address
+    );
   });
 
   it("swapExactInputMultihop", async () => {
     const amountIn = 10n ** 18n;
 
-    //deposite weth
+    // Deposit WETH
     await weth.deposit({ value: amountIn });
-    await weth.approve(s.address, amountIn);
+    await weth.approve(swapMultiHop.address, amountIn);
 
-    //swap
+    // Swap
     await swapMultiHop.swapExactInputMultihop(amountIn);
-    console.log("DAI balance: ", await dai.balanceOf(accounts[0].address));
+    console.log(
+      "DAI balance after swap: ",
+      await dai.balanceOf(accounts[0].address)
+    );
   });
 
   it("swapExactOutputMultihop", async () => {
     const wethAmountInMax = 10n ** 18n;
-    const daiAmountOut = 100n * 10n * 18n;
+    const daiAmountOut = 100n * 10n ** 18n;
 
-    //deposit weth
+    // Deposit WETH
     await weth.deposit({ value: wethAmountInMax });
-    await weth.approve(s.address, wethAmountInMax);
+    await weth.approve(swapMultiHop.address, wethAmountInMax);
 
-    //swap
+    // Swap
     await swapMultiHop.swapExactOutputMultihop(daiAmountOut, wethAmountInMax);
-    console.log(accounts[0].address);
-    console.log("DAI balance: ", await dai.balanceOf(accounts[0].address));
+    console.log(
+      "DAI balance after swap: ",
+      await dai.balanceOf(accounts[0].address)
+    );
   });
 });

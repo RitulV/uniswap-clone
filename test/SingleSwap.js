@@ -1,5 +1,5 @@
-const { expect } = require("chai"); // library for testing
-const { ether } = require("hardhat");
+// const { expect } = require("chai"); // library for testing
+const { ethers } = require("hardhat");
 
 // track addresses
 const DAI = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
@@ -13,14 +13,15 @@ describe("SingleSwapToken", () => {
   let dai;
   let usdc;
 
-  // this function is run everytime contract is run
+  // this function is run every time the contract is tested
   before(async () => {
     accounts = await ethers.getSigners(1);
 
     const SingleSwapToken = await ethers.getContractFactory("SingleSwapToken");
 
-    SingleSwapToken = await SingleSwapToken.deploy();
-    await SingleSwapToken.deploy();
+    // Corrected variable name here
+    singleSwapToken = await SingleSwapToken.deploy();
+    await singleSwapToken.deployed();
 
     weth = await ethers.getContractAt("IWETH", WETH9);
     dai = await ethers.getContractAt("IERC20", DAI);
@@ -36,24 +37,24 @@ describe("SingleSwapToken", () => {
   it("swapExactInputSingle", async () => {
     const amountIn = 10n ** 18n;
 
-    //deposite weth
+    // Deposit WETH
     await weth.deposit({ value: amountIn });
     await weth.approve(singleSwapToken.address, amountIn);
 
-    //swap
-    await singleSwapToken.swapExactInputString(amountIn);
+    // Swap
+    await singleSwapToken.swapExactInputSingle(amountIn);
     console.log("DAI balance: ", await dai.balanceOf(accounts[0].address));
   });
 
   it("swapExactOutputSingle", async () => {
     const wethAmountInMax = 10n ** 18n;
-    const daiAmountOut = 100n * 10n * 18n;
+    const daiAmountOut = 100n * 10n ** 18n;
 
-    //deposit weth
+    // Deposit WETH
     await weth.deposit({ value: wethAmountInMax });
     await weth.approve(singleSwapToken.address, wethAmountInMax);
 
-    //swap
+    // Swap
     await singleSwapToken.swapExactOutputSingle(daiAmountOut, wethAmountInMax);
     console.log(accounts[0].address);
     console.log("DAI balance: ", await dai.balanceOf(accounts[0].address));
