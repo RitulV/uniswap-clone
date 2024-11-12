@@ -13,7 +13,7 @@ import {
 } from "../Utils/appFeatures";
 
 import { IWETHABI } from "./constants";
-// import ERC20 from "./ERC20.json";
+import ERC20 from "./ERC20.json";
 
 export const SwapTokenContext = React.createContext();
 
@@ -28,8 +28,8 @@ export const SwapTokenContextProvider = ({ children }) => {
   // weth, boo and life token address
   const addToken = [
     "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-    "0x90c84237fddf091b1e63f369af122eb46000bc70",
-    "0x3D63c50AD04DD5aE394CAB562b7691DD5de7CF6f",
+    "0xb60971942E4528A811D24826768Bc91ad1383D21",
+    "0xD185B4846E5fd5419fD4D077dc636084BEfC51C0",
   ];
 
   const fetchingData = async () => {
@@ -39,9 +39,12 @@ export const SwapTokenContextProvider = ({ children }) => {
       setAccount(userAccount);
 
       // create provider
-      const web3modal = new Web3Modal();
-      const connection = new web3modal.connect();
-      const provider = new ethers.providers.Web3Provider(connection);
+      // const web3modal = new Web3Modal();
+      // const connection = await web3modal.connect();
+      // const provider = new ethers.providers.Web3Provider(connection);
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://eth-mainnet.g.alchemy.com/v2/L6WZg1Z2DT1CtAS3E2k3FDMsuVMTJGxm"
+      );
 
       // check balance
       const balance = await provider.getBalance(userAccount);
@@ -54,7 +57,7 @@ export const SwapTokenContextProvider = ({ children }) => {
       setNetworkConnect(network.name);
 
       // all token balance and data
-      addToken.map(async (el, i) => {
+      addToken.map(async (el) => {
         // getting contract
         const contract = new ethers.Contract(el, ERC20, provider);
 
@@ -99,19 +102,17 @@ export const SwapTokenContextProvider = ({ children }) => {
   // single swap token
   const singleSwapToken = async () => {
     try {
-      let singleSwapToken, weth, dai;
+      const singleSwapToken = await connectingWithSingleSwapToken();
+      const weth = await connectingWithIWETHToken();
+      const dai = await connectingWithDAIToken();
 
-      singleSwapToken = await connectingWithSingleSwapToken();
-      weth = await connectingWithIWETHToken();
-      dai = await connectingWithDAIToken();
-
-      const amountIn = 10n ** 18n;
+      const amountIn = BigNumber.from("1000000000000000000"); // 1 WETH
 
       await weth.deposit({ value: amountIn });
-      await weth.approve(singleSwapToken.address, amountIn);
+      await weth.approve(singleSwapTokenContract.address, amountIn);
 
       // swap
-      await singleSwapToken.swapExactInputSingle(amountIn, {
+      await singleSwapTokenContract.swapExactInputSingle(amountIn, {
         gasLimit: 300000,
       });
 
