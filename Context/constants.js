@@ -21,3 +21,8 @@ export const swapMultiHopABI = swapMultiHop.abi;
 
 export const IWETHAddress = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 export const IWETHABI = IWETH.abi; 
+
+// BOO deployed to 0xb60971942E4528A811D24826768Bc91ad1383D21
+// LIFE deployed to 0xD185B4846E5fd5419fD4D077dc636084BEfC51C0
+// SingleSwapToken deployed to 0xF94AB55a20B32AC37c3A105f12dB535986697945
+// SwapMultiHopToken deployed to 0xBCF063A9eB18bc3C6eB005791C61801B7cB16fe4
