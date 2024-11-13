@@ -27,7 +27,7 @@ export const SwapTokenContextProvider = ({ children }) => {
 
   // weth, boo and life token address
   const addToken = [
-    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "0xA899118f4BCCb62F8c6A37887a4F450D8a4E92E0",
     "0xb60971942E4528A811D24826768Bc91ad1383D21",
     "0xD185B4846E5fd5419fD4D077dc636084BEfC51C0",
   ];
@@ -39,12 +39,12 @@ export const SwapTokenContextProvider = ({ children }) => {
       setAccount(userAccount);
 
       // create provider
-      // const web3modal = new Web3Modal();
-      // const connection = await web3modal.connect();
-      // const provider = new ethers.providers.Web3Provider(connection);
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://eth-mainnet.g.alchemy.com/v2/L6WZg1Z2DT1CtAS3E2k3FDMsuVMTJGxm"
-      );
+      const web3modal = new Web3Modal();
+      const connection = await web3modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      // const provider = new ethers.providers.JsonRpcProvider(
+      //   "https://eth-mainnet.g.alchemy.com/v2/L6WZg1Z2DT1CtAS3E2k3FDMsuVMTJGxm"
+      // );
 
       // check balance
       const balance = await provider.getBalance(userAccount);

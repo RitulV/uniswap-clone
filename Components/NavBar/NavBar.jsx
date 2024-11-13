@@ -38,7 +38,7 @@ const NavBar = () => {
         <div className={Style.NavBar_box_left}>
           {/* LOGO_IMAGE */}
           <div className={Style.NavBar_box_left_img}>
-            {/* <Image src={images.uniswap} alt="logo" height={50} width={50} /> */}
+            <Image src={images.uniswap} alt="logo" height={50} width={50} />
           </div>
 
           {/* MENU_ITEMS */}

@@ -4,7 +4,7 @@ require("@nomiclabs/hardhat-waffle");
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
-    version: "0.8.28", 
+    version: "0.8.28",
     settings: {
       optimizer: {
         enabled: true,
@@ -15,10 +15,14 @@ module.exports = {
   },
   networks: {
     hardhat: {
-        gas: 12000000, // Set an appropriate gas limit
-        forking: {
-            url: "https://eth-mainnet.g.alchemy.com/v2/L6WZg1Z2DT1CtAS3E2k3FDMsuVMTJGxm",
-        },
+      gas: 12000000, // Set an appropriate gas limit
+      forking: {
+        url: "https://eth-mainnet.g.alchemy.com/v2/L6WZg1Z2DT1CtAS3E2k3FDMsuVMTJGxm",
+        // url: "https://eth-sepolia.g.alchemy.com/v2/L6WZg1Z2DT1CtAS3E2k3FDMsuVMTJGxm",
+        accounts: [
+          "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+        ],
+      },
     },
   },
 };
